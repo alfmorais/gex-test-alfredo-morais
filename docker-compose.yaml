@@ -1,0 +1,130 @@
+services:
+  mockoon:
+    image: mockoon/cli:latest
+    container_name: mockoon
+    ports:
+      - "12000:12000"
+    volumes:
+      - ./mock-api.json:/data/mock-api.json
+    command:
+      - --data
+      - /data/mock-api.json
+    networks:
+      - gex-network
+
+  distributor:
+    build:
+      context: ./apps/distributor
+      dockerfile: Dockerfile
+    container_name: distributor
+    ports:
+      - "11000:11000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DATABASE_HOST: host.docker.internal
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: gex
+      DATABASE_PORT: 3306
+
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+
+      WEBHOOK_URL: http://host.docker.internal:12000/webhook
+
+    networks:
+      - gex-network
+
+  consumer:
+    build:
+      context: ./apps/consumer
+      dockerfile: Dockerfile
+    container_name: consumer
+    ports:
+      - "10000:10000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DATABASE_HOST: host.docker.internal
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: gex
+      DATABASE_PORT: 3306
+
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+
+    networks:
+      - gex-network
+
+  webhook:
+    build:
+      context: ./apps/webhook
+      dockerfile: Dockerfile
+    container_name: webhook
+    ports:
+      - "9000:9000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    environment:
+      DATABASE_HOST: host.docker.internal
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: gex
+      DATABASE_PORT: 3306
+
+      GRUMER_SECRET_KEY: bd8fe643a6e1b725db136104efebe450243ed7ef6c6a755ab9b2315fb648f153
+      RABBITMQ_HOST: host.docker.internal
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: guest
+      RABBITMQ_PASSWORD: guest
+
+    networks:
+      - gex-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gex
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - gex-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - gex-network
+
+volumes:
+  mysql_data:
+
+networks:
+  gex-network:
+    driver: bridge

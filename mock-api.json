@@ -1,0 +1,102 @@
+{
+    "uuid": "10873dc6-8b35-46b5-83f0-f28c99c5ef47",
+    "lastMigration": 33,
+    "name": "Demo API",
+    "endpointPrefix": "",
+    "latency": 0,
+    "port": 12000,
+    "hostname": "",
+    "folders": [],
+    "routes": [
+        {
+            "uuid": "2d54559c-ba36-45a6-a964-1a4ac7bfbb83",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "webhook",
+            "responses": [
+                {
+                    "uuid": "c67bd6fa-52ae-402a-a2d5-1ad4ac3d9104",
+                    "body": "{\n  \"sucess\": true\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id",
+                    "callbacks": []
+                }
+            ],
+            "responseMode": null,
+            "streamingMode": null,
+            "streamingInterval": 0
+        }
+    ],
+    "rootChildren": [
+        {
+            "type": "route",
+            "uuid": "2d54559c-ba36-45a6-a964-1a4ac7bfbb83"
+        }
+    ],
+    "proxyMode": false,
+    "proxyHost": "",
+    "proxyRemovePrefix": false,
+    "tlsOptions": {
+        "enabled": false,
+        "type": "CERT",
+        "pfxPath": "",
+        "certPath": "",
+        "keyPath": "",
+        "caPath": "",
+        "passphrase": ""
+    },
+    "cors": true,
+    "headers": [
+        {
+            "key": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+        },
+        {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+        },
+        {
+            "key": "Access-Control-Allow-Headers",
+            "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+        }
+    ],
+    "proxyReqHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "proxyResHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "data": [
+        {
+            "uuid": "0132de17-9bf2-4038-acf9-e8116e57aa26",
+            "id": "60up",
+            "name": "Users",
+            "documentation": "",
+            "value": "[\n  {{#repeat 50}}\n  {\n    \"id\": \"{{faker 'string.uuid'}}\",\n    \"username\": \"{{faker 'internet.userName'}}\"\n  }\n  {{/repeat}}\n]"
+        }
+    ],
+    "callbacks": []
+}

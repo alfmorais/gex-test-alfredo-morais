@@ -1,0 +1,72 @@
+[project]
+name = "distributor"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aio-pika>=9.6.2",
+    "asyncmy>=0.2.11",
+    "greenlet>=3.5.1",
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.14.1",
+    "sqlmodel>=0.0.38",
+]
+
+
+[tool.ruff]
+line-length = 79
+extend-exclude = ["migrations"]
+
+[tool.ruff.lint]
+preview = true
+select = ["I", "F", "E", "W", "PL", "PT"]
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 79
+known_first_party = ["src"]
+default_section = "THIRDPARTY"
+
+[tool.mypy]
+python_version = "3.13"
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ["migrations", "mutants", "tests", ".vscode", ".poetry", ".ruff_cache", ".venv", ".env"]
+warn_unused_ignores = true
+plugins = ["pydantic.mypy"]
+
+[tool.coverage.run]
+omit = [
+    "src/main.py",
+    "src/settings.py",
+    "src/infrastructure/log/logger.py",
+    "src/infrastructure/database/engine.py",
+    "src/domain/entities/lead.py",
+    "src/domain/entities/lead_dead_letter.py",
+    "src/domain/entities/lead_event.py",
+    "src/domain/entities/order.py",
+]
+
+[dependency-groups]
+dev = [
+    "ipdb>=0.13.13",
+    "isort>=8.0.1",
+    "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.16",
+]

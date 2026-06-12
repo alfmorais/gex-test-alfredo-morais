@@ -1,0 +1,37 @@
+{
+    "payload": {
+        "gateway": "grummer",
+        "headers": {
+            "content_type": "application/json"
+        },
+        "body": {
+            "transaction_id": "ORD-2026-010077",
+            "transaction_time": "2026-04-30T09:17:12.422783+00:00",
+            "event": "order.approved",
+            "customer": {
+                "first_name": "John",
+                "last_name": "Rodriguez",
+                "email": "john.rodriguez690@outlook.com",
+                "phone": "+14447074635",
+                "country": "US",
+                "phone_valid": true,
+                "normalized_phone": "+14447074635",
+                "email_valid": true
+            },
+            "product": {
+                "id": "PROD-007",
+                "name": "Derma Essential",
+                "niche": "skin",
+                "quantity": 1
+            },
+            "payment": {
+                "status": "approved",
+                "amount_usd": 112.91,
+                "method": "credit_card"
+            },
+            "idempotency_key": "ORD-2026-010077:order.approved"
+        },
+        "correlation_id": "9952f5f7-f71d-4334-bbeb-f606b79907cd"
+    },
+    "error": "Foreign key associated with column 'distribution_status.order_id' could not find table 'orders' with which to generate a foreign key to target column 'id'"
+}
